@@ -264,7 +264,7 @@ def create_source_bin(index, uri):
 def main(args):
     # Check input arguments
     if len(args) != 3:
-        sys.stderr.write("usage: %s <v4l2-device-path> <folder to save frames> \n" % args[0])
+        sys.stderr.write("usage: %s <rstp-device-link> <folder to save frames> \n" % args[0])
         sys.exit(1)
 
     global folder_name
@@ -291,7 +291,7 @@ def main(args):
     
     # Source element for reading from the file
     print("Creating Source \n ")
-    source = Gst.ElementFactory.make("v4l2src", "usb-cam-source")
+    source = Gst.ElementFactory.make("rtspsrc", "rtsp-source")
     if not source:
         sys.stderr.write(" Unable to create Source \n")
 
