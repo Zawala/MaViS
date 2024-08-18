@@ -294,7 +294,7 @@ def main(args):
 
     # Source element for reading from the file
     print("Creating Source \n ")
-    source_bin=create_source_bin(0, args[1])
+    source_bin=create_source_bin(3, args[1])
     if not source_bin:
         sys.stderr.write("Unable to create source bin \n")
     pipeline.add(source_bin)
