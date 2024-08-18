@@ -289,15 +289,25 @@ def main(args):
     if not pipeline:
         sys.stderr.write(" Unable to create Pipeline \n")
     
+
+
+
     # Source element for reading from the file
     print("Creating Source \n ")
-    source = Gst.ElementFactory.make("rtspsrc", "rtsp-source")
-    if not source:
-        sys.stderr.write(" Unable to create Source \n")
+    source_bin=create_source_bin(i, args[1])
+    if not source_bin:
+        sys.stderr.write("Unable to create source bin \n")
+    pipeline.add(source_bin)
+    print("Creating Source \n ")
+   
 
-    caps_v4l2src = Gst.ElementFactory.make("capsfilter", "v4l2src_caps")
+    caps_v4l2src = Gst.ElementFactory.make("capsfilter", "rtsp-source_caps")
     if not caps_v4l2src:
-        sys.stderr.write(" Unable to create v4l2src capsfilter \n")
+        sys.stderr.write(" Unable to create rtsp-source capsfilter \n")
+
+
+
+
 
     print("Creating Video Converter \n")
 
@@ -374,7 +384,6 @@ def main(args):
     print("Playing cam %s " %args[1])
     caps_v4l2src.set_property('caps', Gst.Caps.from_string("video/x-raw, framerate=30/1"))
     caps_vidconvsrc.set_property('caps', Gst.Caps.from_string("video/x-raw(memory:NVMM)"))
-    source.set_property('location', args[1])
 
     streammux.set_property('width', 1920)
     streammux.set_property('height', 1080)
@@ -405,7 +414,7 @@ def main(args):
         tiler.set_property("nvbuf-memory-type", mem_type)
 
     print("Adding elements to Pipeline \n")
-    pipeline.add(source)
+    pipeline.add(source_bin)
     pipeline.add(caps_v4l2src)
     pipeline.add(vidconvsrc)
     pipeline.add(nvvidconvsrc)
