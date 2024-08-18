@@ -431,7 +431,6 @@ def main(args):
     pipeline.add(sink)
 
     print("Linking elements in the Pipeline \n")
-    source.link(caps_v4l2src)
     caps_v4l2src.link(vidconvsrc)
     vidconvsrc.link(nvvidconvsrc)
     nvvidconvsrc.link(caps_vidconvsrc)
